@@ -34,7 +34,7 @@ radiation_mapper = {"NO": 2, "Yes": 1}
 chemotherapy_mapper = {"NO": 2, "Yes": 1}
 bone_metastasis_mapper = {"NO": 2, "Yes": 1}
 brain_metastasis_mapper = {"NO": 2, "Yes": 1}
-liver_metastasis_mapper = {"NO": 2, "Yes": 1}
+liver_metastasis_mapper = {"NO": 2, "Yes": 1}  
 lung_metastasis_mapper = {"NO": 2, "Yes": 1}
 
 # 训练XGBoost模型
@@ -67,7 +67,6 @@ def predict_Vital_status(age, sex, histologic_type, grade,
 st.title("6-month survival of EM patients based on XGBoost")
 st.sidebar.write("Variables")
 
-# 用户输入
 age = st.sidebar.number_input("Age", min_value=0, max_value=99, step=1)  # 允许用户输入具体数值
 sex = st.sidebar.selectbox("Sex", ('male', 'female'))
 histologic_type = st.sidebar.selectbox("Histologic Type", options=list(histologic_type_mapper.keys()))
@@ -81,9 +80,7 @@ brain_metastasis = st.sidebar.selectbox("Brain metastasis", options=list(brain_m
 liver_metastasis = st.sidebar.selectbox("Liver metastasis", options=list(liver_metastasis_mapper.keys())) 
 lung_metastasis = st.sidebar.selectbox("Lung metastasis", options=list(lung_metastasis_mapper.keys()))
 
-predict_button = st.sidebar.button("Predict")  # 创建预测按钮
-
-if predict_button:  # 当用户点击按钮时进行预测
+if st.button("Predict"):
     prediction, probability = predict_Vital_status(
         age, sex, histologic_type, grade,
         t_stage, surgery, radiation, chemotherapy,
