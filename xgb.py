@@ -19,10 +19,6 @@ xgb_params = {
     'min_child_weight': 4,
     'n_estimators': 77,
     'subsample': 0.6349600455910331,
-    'objective': 'binary:logistic',
-    'eval_metric': 'logloss',
-    'use_label_encoder': False,
-    'verbosity': 0
 }
 
 xgb_model = xgb.XGBClassifier(**xgb_params)
@@ -38,7 +34,7 @@ radiation_mapper = {"NO": 2, "Yes": 1}
 chemotherapy_mapper = {"NO": 2, "Yes": 1}
 bone_metastasis_mapper = {"NO": 2, "Yes": 1}
 brain_metastasis_mapper = {"NO": 2, "Yes": 1}
-liver_metastasis_mapper = {"NO": 2, "Yes": 1}  # 修改为正确的变量名
+liver_metastasis_mapper = {"NO": 2, "Yes": 1}  
 lung_metastasis_mapper = {"NO": 2, "Yes": 1}
 
 # 训练XGBoost模型
@@ -59,7 +55,7 @@ def predict_Vital_status(age, sex, histologic_type, grade,
         'Chemotherapy': [chemotherapy_mapper[chemotherapy]],
         'Bone metastasis': [bone_metastasis_mapper[bone_metastasis]],
         'Brain metastasis': [brain_metastasis_mapper[brain_metastasis]],
-        'Liver metastasis': [liver_metastasis_mapper[liver_metastasis]],  # 修改为正确的变量名
+        'Liver metastasis': [liver_metastasis_mapper[liver_metastasis]],  
         'Lung metastasis': [lung_metastasis_mapper[lung_metastasis]]
     })
     prediction = xgb_model.predict(input_data)[0]
@@ -71,7 +67,7 @@ def predict_Vital_status(age, sex, histologic_type, grade,
 st.title("6-month survival of EM patients based on XGBoost")
 st.sidebar.write("Variables")
 
-age = st.sidebar.selectbox("Age", options=list(range(0, 100)))  # 示例：年龄从0到99
+age = st.sidebar.number_input("Age", min_value=0, max_value=99, step=1)  # 允许用户输入具体数值
 sex = st.sidebar.selectbox("Sex", ('male', 'female'))
 histologic_type = st.sidebar.selectbox("Histologic Type", options=list(histologic_type_mapper.keys()))
 grade = st.sidebar.selectbox("Tumor grade", options=list(grade_mapper.keys()))
@@ -81,7 +77,7 @@ radiation = st.sidebar.selectbox("Radiation", options=list(radiation_mapper.keys
 chemotherapy = st.sidebar.selectbox("Chemotherapy", options=list(chemotherapy_mapper.keys()))
 bone_metastasis = st.sidebar.selectbox("Bone metastasis", options=list(bone_metastasis_mapper.keys()))
 brain_metastasis = st.sidebar.selectbox("Brain metastasis", options=list(brain_metastasis_mapper.keys()))
-liver_metastasis = st.sidebar.selectbox("Liver metastasis", options=list(liver_metastasis_mapper.keys()))  # 修改为正确的变量名
+liver_metastasis = st.sidebar.selectbox("Liver metastasis", options=list(liver_metastasis_mapper.keys())) 
 lung_metastasis = st.sidebar.selectbox("Lung metastasis", options=list(lung_metastasis_mapper.keys()))
 
 if st.button("Predict"):
@@ -91,5 +87,5 @@ if st.button("Predict"):
         bone_metastasis, brain_metastasis, liver_metastasis, lung_metastasis
     )
 
-    st.write("Predicted Outcome:", prediction)
-    st.write("Probability of Outcome:", probability)
+    st.write("Predict survival at the last observation:", prediction)
+    st.write("Probability of 6-month survival is:", probability)
