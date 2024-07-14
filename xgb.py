@@ -59,7 +59,7 @@ def predict_Vital_status(age, sex, histologic_type, grade,
         'Lung metastasis': [lung_metastasis_mapper[lung_metastasis]]
     })
     prediction = xgb_model.predict(input_data)[0]
-    probability = xgb_model.predict_proba(input_data)[0][1]  # 获取属于类别1的概率
+    probability = xgb_model.predict_proba(input_data)[0][0]  # 获取属于类别1的概率
     class_label = class_mapping[prediction]
     return class_label, probability
 
