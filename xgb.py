@@ -38,7 +38,7 @@ radiation_mapper = {"NO": 2, "Yes": 1}
 chemotherapy_mapper = {"NO": 2, "Yes": 1}
 bone_metastasis_mapper = {"NO": 2, "Yes": 1}
 brain_metastasis_mapper = {"NO": 2, "Yes": 1}
-live_metastasis_mapper = {"NO": 2, "Yes": 1}
+liver_metastasis_mapper = {"NO": 2, "Yes": 1}  # 修改为正确的变量名
 lung_metastasis_mapper = {"NO": 2, "Yes": 1}
 
 # 训练XGBoost模型
@@ -47,7 +47,7 @@ xgb_model.fit(X, y)
 # 预测函数
 def predict_Vital_status(age, sex, histologic_type, grade,
                          t_stage, surgery, radiation, chemotherapy,
-                         bone_metastasis, brain_metastasis, live_metastasis, lung_metastasis):
+                         bone_metastasis, brain_metastasis, liver_metastasis, lung_metastasis):
     input_data = pd.DataFrame({
         'Age': [age],
         'Sex': [sex_mapper[sex]],
@@ -59,7 +59,7 @@ def predict_Vital_status(age, sex, histologic_type, grade,
         'Chemotherapy': [chemotherapy_mapper[chemotherapy]],
         'Bone metastasis': [bone_metastasis_mapper[bone_metastasis]],
         'Brain metastasis': [brain_metastasis_mapper[brain_metastasis]],
-        'Liver metastasis': [live_metastasis_mapper[live_metastasis]],
+        'Liver metastasis': [liver_metastasis_mapper[liver_metastasis]],  # 修改为正确的变量名
         'Lung metastasis': [lung_metastasis_mapper[lung_metastasis]]
     })
     prediction = xgb_model.predict(input_data)[0]
@@ -81,14 +81,14 @@ radiation = st.sidebar.selectbox("Radiation", options=list(radiation_mapper.keys
 chemotherapy = st.sidebar.selectbox("Chemotherapy", options=list(chemotherapy_mapper.keys()))
 bone_metastasis = st.sidebar.selectbox("Bone metastasis", options=list(bone_metastasis_mapper.keys()))
 brain_metastasis = st.sidebar.selectbox("Brain metastasis", options=list(brain_metastasis_mapper.keys()))
-live_metastasis = st.sidebar.selectbox("Liver metastasis", options=list(live_metastasis_mapper.keys()))
+liver_metastasis = st.sidebar.selectbox("Liver metastasis", options=list(liver_metastasis_mapper.keys()))  # 修改为正确的变量名
 lung_metastasis = st.sidebar.selectbox("Lung metastasis", options=list(lung_metastasis_mapper.keys()))
 
 if st.button("Predict"):
     prediction, probability = predict_Vital_status(
         age, sex, histologic_type, grade,
         t_stage, surgery, radiation, chemotherapy,
-        bone_metastasis, brain_metastasis, live_metastasis, lung_metastasis
+        bone_metastasis, brain_metastasis, liver_metastasis, lung_metastasis
     )
 
     st.write("Predicted Outcome:", prediction)
