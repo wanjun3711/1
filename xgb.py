@@ -67,6 +67,7 @@ def predict_Vital_status(age, sex, histologic_type, grade,
 st.title("6-month survival of EM patients based on XGBoost")
 st.sidebar.write("Variables")
 
+# 用户输入
 age = st.sidebar.number_input("Age", min_value=0, max_value=99, step=1)  # 允许用户输入具体数值
 sex = st.sidebar.selectbox("Sex", ('male', 'female'))
 histologic_type = st.sidebar.selectbox("Histologic Type", options=list(histologic_type_mapper.keys()))
@@ -80,7 +81,7 @@ brain_metastasis = st.sidebar.selectbox("Brain metastasis", options=list(brain_m
 liver_metastasis = st.sidebar.selectbox("Liver metastasis", options=list(liver_metastasis_mapper.keys())) 
 lung_metastasis = st.sidebar.selectbox("Lung metastasis", options=list(lung_metastasis_mapper.keys()))
 
-if st.button("Predict"):
+if st.sidebar.button("Predict"):  # 当用户点击按钮时进行预测
     prediction, probability = predict_Vital_status(
         age, sex, histologic_type, grade,
         t_stage, surgery, radiation, chemotherapy,
